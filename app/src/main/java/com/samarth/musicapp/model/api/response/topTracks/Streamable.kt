@@ -2,8 +2,8 @@ package com.samarth.musicapp.model.api.response.topTracks
 
 import com.google.gson.annotations.SerializedName
 
-data class Image(
+data class Streamable(
     @SerializedName("#text")
     val src: String,
-    val size: String
+    val fulltrack: String
 )

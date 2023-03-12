@@ -2,8 +2,8 @@ package com.samarth.musicapp.model.api.response.topTracks
 
 import com.google.gson.annotations.SerializedName
 
-data class Albums(
+data class Tracks(
     @SerializedName("@attr")
     val attr: Attr,
-    val album: List<Album>
+    val track: List<Track>
 )

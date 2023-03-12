@@ -17,7 +17,6 @@ import com.samarth.musicapp.viewModel.GenresViewModel
 class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
     val navargs: GenreDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentGenreDetailsBinding
-
     private val viewModel: GenresViewModel by hiltNavGraphViewModels(R.id.main_nav)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,9 +30,9 @@ class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
                 findNavController().popBackStack()
             }
         }
+
         activity?.let {
-            val adapter = GenreViewPagerAdapter(it)
-            binding.vpGenre.adapter = adapter
+            binding.vpGenre.adapter = GenreViewPagerAdapter(it)
             binding.tabLayout.addOnTabSelectedListener(
                 object : OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -48,19 +47,21 @@ class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
 
                 }
             )
-            binding.vpGenre.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            binding.vpGenre.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     binding.tabLayout.getTabAt(position)?.select()
                 }
             })
         }
+        binding.vpGenre.isSaveFromParentEnabled = false
+
+
         initObservers()
 
     }
-
     private fun initObservers() {
-
         viewModel.genGenresLiveData.observe(
             viewLifecycleOwner
         ) {
@@ -71,4 +72,5 @@ class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
             }
         }
     }
+
 }

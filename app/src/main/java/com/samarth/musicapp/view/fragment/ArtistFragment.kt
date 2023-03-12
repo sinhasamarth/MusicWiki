@@ -25,7 +25,7 @@ class ArtistFragment : Fragment(R.layout.layout_recylerview_with_loader) {
             layoutManager = GridLayoutManager(context, 2)
 
         }
-        viewModel.topArtistLivedata.observe(viewLifecycleOwner) {
+        viewModel.topArtistLivedata().observe(viewLifecycleOwner) {
             artistAdapter.submitData(lifecycle, it)
 
         }

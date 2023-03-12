@@ -27,7 +27,7 @@ class AlbumFragments : Fragment(R.layout.layout_recylerview_with_loader) {
             layoutManager = GridLayoutManager(context, 2)
 
         }
-        viewModel.albumLiveData.observe(viewLifecycleOwner) {
+        viewModel.albumLiveData().observe(viewLifecycleOwner) {
             albumAdapter.submitData(lifecycle, it)
 
         }

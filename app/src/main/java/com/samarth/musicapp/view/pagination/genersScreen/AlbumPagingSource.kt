@@ -8,7 +8,10 @@ import com.samarth.musicapp.model.api.response.topAlbum.Album
 class AlbumPagingSource(private val apiRepository: ApiRepository, private val genreName:String) :
     PagingSource<Int, Album>() {
     override fun getRefreshKey(state: PagingState<Int, Album>): Int? {
-        return null
+          return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Album> {
