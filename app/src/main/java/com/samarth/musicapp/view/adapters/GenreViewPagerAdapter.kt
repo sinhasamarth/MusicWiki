@@ -3,14 +3,19 @@ package com.samarth.musicapp.view.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.samarth.musicapp.view.fragment.AlbumFragments
+import com.samarth.musicapp.view.fragment.ArtistFragment
+import com.samarth.musicapp.view.fragment.TracksFragment
 
 class GenreViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount(): Int {
-
-    }
-
+    override fun getItemCount() = 3
     override fun createFragment(position: Int): Fragment {
+        return when (position) {
+            0 -> AlbumFragments()
+            1 -> ArtistFragment()
+            else -> TracksFragment()
+        }
     }
 
 }

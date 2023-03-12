@@ -23,8 +23,9 @@ interface ApiService {
 
     @GET("2.0/")
     suspend fun getTopAlbum(
-        @Query("tag") method: String,
-        @Query("page") page: Int,
+        @Query("method") method: String,
+        @Query("tag") genre: String,
+        @Query("page") page: Int = 1,
     ): Response<TopAlbumsResponse>
 
     suspend fun getTopTracks(

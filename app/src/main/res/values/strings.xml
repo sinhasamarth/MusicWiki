@@ -6,4 +6,7 @@
     <string name="more_genres">More Genres</string>
     <string name="genre_desc">Genre Desc</string>
     <string name="genre_name">Genre Name</string>
+    <string name="tracks">Tracks</string>
+    <string name="artists">Artists</string>
+    <string name="album">Album</string>
 </resources>

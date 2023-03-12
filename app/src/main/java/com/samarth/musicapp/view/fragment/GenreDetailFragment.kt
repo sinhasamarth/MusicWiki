@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.samarth.musicapp.R
 import com.samarth.musicapp.databinding.FragmentGenreDetailsBinding
+import com.samarth.musicapp.view.adapters.GenreViewPagerAdapter
 import com.samarth.musicapp.viewModel.GenresViewModel
 
 class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
@@ -20,12 +25,42 @@ class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
         val genre = navargs.genre
         binding = FragmentGenreDetailsBinding.bind(view)
         viewModel.getGenreDetails(genre)
+        GenresViewModel.genreName = genre
         binding.apply {
             tvGenresName.text = navargs.genre
             ibBackButton.setOnClickListener {
                 findNavController().popBackStack()
             }
         }
+        activity?.let {
+            val adapter = GenreViewPagerAdapter(it)
+            binding.vpGenre.adapter = adapter
+            binding.tabLayout.addOnTabSelectedListener(
+                object : OnTabSelectedListener {
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        binding.vpGenre.currentItem = tab!!.position
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    }
+
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+                    }
+
+                }
+            )
+            binding.vpGenre.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.tabLayout.getTabAt(position)?.select()
+                }
+            })
+        }
+        initObservers()
+
+    }
+
+    private fun initObservers() {
 
         viewModel.genGenresLiveData.observe(
             viewLifecycleOwner
@@ -36,6 +71,5 @@ class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
                 }
             }
         }
-
     }
 }

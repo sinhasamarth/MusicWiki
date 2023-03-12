@@ -9,4 +9,6 @@ class ApiRepository @Inject constructor(
     suspend fun getAllGenres(page: Int) = apiHelper.getTopTags("chart.gettoptags", page)
 
     suspend fun getGenreDetails(genre:String) = apiHelper.getGenreDetails("tag.getinfo", genre)
+
+    suspend fun getAllAlbum(genre: String, page:Int) = apiHelper.getTopAlbum("tag.gettopalbums", genre, page)
 }
