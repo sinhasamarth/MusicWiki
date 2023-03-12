@@ -1,4 +1,4 @@
-package com.samarth.musicapp.view.pagination
+package com.samarth.musicapp.view.pagination.genersScreen
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

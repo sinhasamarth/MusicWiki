@@ -7,7 +7,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.samarth.musicapp.R
 import com.samarth.musicapp.databinding.LayoutRecylerviewWithLoaderBinding
-import com.samarth.musicapp.view.adapters.AlbumRecyclerViewAdapter
+import com.samarth.musicapp.view.adapters.genersDetails.AlbumRecyclerViewAdapter
 import com.samarth.musicapp.viewModel.GenresViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

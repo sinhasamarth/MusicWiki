@@ -7,12 +7,11 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.samarth.musicapp.R
 import com.samarth.musicapp.databinding.FragmentGenreDetailsBinding
-import com.samarth.musicapp.view.adapters.GenreViewPagerAdapter
+import com.samarth.musicapp.view.adapters.genersDetails.GenreViewPagerAdapter
 import com.samarth.musicapp.viewModel.GenresViewModel
 
 class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {

@@ -1,4 +1,4 @@
-package com.samarth.musicapp.view.adapters
+package com.samarth.musicapp.view.adapters.genersDetails
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

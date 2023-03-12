@@ -10,7 +10,8 @@ import androidx.paging.cachedIn
 import androidx.paging.liveData
 import com.samarth.musicapp.api.repository.ApiRepository
 import com.samarth.musicapp.model.api.response.genreDetails.GenreDetailsResponse
-import com.samarth.musicapp.view.pagination.AlbumPagingSource
+import com.samarth.musicapp.view.pagination.genersScreen.AlbumPagingSource
+import com.samarth.musicapp.view.pagination.genersScreen.ArtistPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,12 +26,17 @@ class GenresViewModel @Inject constructor(
 
 
     val genGenresLiveData = MutableLiveData<GenreDetailsResponse>()
-//    val getAllAlbumLiveData = MutableLiveData<TopAlbumsResponse>()
+
+    //    val getAllAlbumLiveData = MutableLiveData<TopAlbumsResponse>()
     val albumLiveData = Pager(
         config = PagingConfig(1),
         pagingSourceFactory = { AlbumPagingSource(apiRepository, genreName) }
     ).liveData.cachedIn(viewModelScope)
 
+    val topArtistLivedata = Pager(
+        config = PagingConfig(1),
+        pagingSourceFactory = { ArtistPagingSource(apiRepository, genreName) }
+    ).liveData.cachedIn(viewModelScope)
 
     fun getGenreDetails(genreName: String) {
         try {
