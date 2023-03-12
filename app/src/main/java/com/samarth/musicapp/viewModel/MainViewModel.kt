@@ -2,9 +2,15 @@ package com.samarth.musicapp.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.samarth.musicapp.api.Result
 import com.samarth.musicapp.api.repository.ApiRepository
 import com.samarth.musicapp.model.api.response.TopGenresResponse
+import com.samarth.musicapp.view.pagination.TopGenresPaginationSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,15 +26,19 @@ class MainViewModel @Inject constructor(
         getAllGenres()
     }
 
-     val allGenersLiveData = MutableLiveData<Result<TopGenresResponse>>()
+    val allGenesLiveData = MutableLiveData<Result<TopGenresResponse>>()
+    val genersList = Pager(
+        config = PagingConfig(1),
+        pagingSourceFactory =  {TopGenresPaginationSource(apiRepository)}
+    ).liveData.cachedIn(viewModelScope)
 
     fun getAllGenres() {
         CoroutineScope(Dispatchers.IO).launch {
-            allGenersLiveData.postValue(Result.Loading())
-            val response = apiRepository.getAllGeneres()
+            allGenesLiveData.postValue(Result.Loading())
+            val response = apiRepository.getAllGenres(1)
             if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!
-                allGenersLiveData.postValue(Result.Success(data))
+                allGenesLiveData.postValue(Result.Success(data))
             }
         }
 

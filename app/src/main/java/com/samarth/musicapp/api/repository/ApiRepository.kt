@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class ApiRepository @Inject constructor(
     private val apiHelper: ApiService
-){
-    suspend fun getAllGeneres () = apiHelper.getTopTags("chart.gettoptags")
+) {
+    suspend fun getAllGenres(page: Int) = apiHelper.getTopTags("chart.gettoptags", page)
 }

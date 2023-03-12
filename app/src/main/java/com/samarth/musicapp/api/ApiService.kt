@@ -7,6 +7,7 @@ import retrofit2.http.Query
 interface ApiService{
     @GET("2.0/")
     suspend fun getTopTags(
-        @Query("method") method:String
+        @Query("method") method:String,
+        @Query("page") page: Int,
     ): Response<TopGenresResponse>
 }
