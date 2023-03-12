@@ -1,4 +1,4 @@
-package com.samarth.musicapp.model.api.response
+package com.samarth.musicapp.model.api.response.topGenres
 
 import com.google.gson.annotations.SerializedName
 

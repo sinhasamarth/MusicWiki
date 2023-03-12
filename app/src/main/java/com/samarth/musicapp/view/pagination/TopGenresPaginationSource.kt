@@ -3,7 +3,7 @@ package com.samarth.musicapp.view.pagination
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.samarth.musicapp.api.repository.ApiRepository
-import com.samarth.musicapp.model.api.response.Tag
+import com.samarth.musicapp.model.api.response.topGenres.Tag
 
 class TopGenresPaginationSource(private val apiRepository: ApiRepository) :
     PagingSource<Int, Tag>() {

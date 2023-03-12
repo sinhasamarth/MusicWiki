@@ -1,5 +1,6 @@
 package com.samarth.musicapp.di
 
+import com.samarth.musicapp.BuildConfig
 import com.samarth.musicapp.api.ApiService
 import com.samarth.musicapp.utils.Constants
 import dagger.Module
@@ -9,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -40,16 +42,26 @@ class AppModule {
     @Provides
     @Singleton
     fun getClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor { chain -> return@addInterceptor addApiKeyToRequests(chain) }
-            .build()
+        val okHttpClient = OkHttpClient.Builder()
+        if (BuildConfig.DEBUG) {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
+            okHttpClient.addInterceptor(interceptor)
+        }
+        okHttpClient.addInterceptor { chain ->
+            return@addInterceptor addApiKeyToRequests(
+                chain
+            )
+        }
+        return okHttpClient.build()
+
     }
 
     @Provides
     @Singleton
     fun addApiKeyToRequests(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
-        val originalHttpUrl = chain.request().url()
+        val originalHttpUrl = chain.request().url
         val newUrl = originalHttpUrl.newBuilder()
             .addQueryParameter("api_key", "0143bfb1f53a64771bff8ec273139724")
             .addQueryParameter("format", "json")

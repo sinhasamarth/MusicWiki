@@ -2,21 +2,24 @@ package com.samarth.musicapp.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.samarth.musicapp.databinding.ItemGenersBinding
 import com.samarth.musicapp.model.api.response.topGenres.Tag
 import com.samarth.musicapp.view.SingleItemClicked
 
-class TopGenresAdapter() : PagingDataAdapter<Tag, TopGenresAdapter.ItemGenresViewHolder>(COMPARATOR) {
+class TopGenresAdapters(val data: List<Tag>, val listener: SingleItemClicked<String>) :
+    RecyclerView.Adapter<TopGenresAdapters.ItemGenresViewHolder>() {
 
     inner class ItemGenresViewHolder(val binding: ItemGenersBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onBindViewHolder(holder: ItemGenresViewHolder, position: Int) {
         holder.binding.apply {
-            tvGenresName.text = getItem(position)?.name?.uppercase() ?: "Null"
+            val data = data[position].name
+            tvGenresName.text = data
+            tvGenresName.setOnClickListener {
+                listener.onItemClickCallback(data)
+            }
         }
     }
 
@@ -25,20 +28,5 @@ class TopGenresAdapter() : PagingDataAdapter<Tag, TopGenresAdapter.ItemGenresVie
         return ItemGenresViewHolder(binding)
     }
 
-    companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<Tag>() {
-            override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean {
-                return oldItem.name == newItem.name
-            }
-
-            override fun areItemsTheSame(oldItem: Tag, newItem: Tag): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return super.getItemCount()
-    }
-
+    override fun getItemCount() = data.size
 }
