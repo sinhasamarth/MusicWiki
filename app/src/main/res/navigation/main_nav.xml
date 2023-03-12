@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_genreDetailFragment_to_albumDetailFragment"
             app:destination="@id/albumDetailFragment" />
+        <action
+            android:id="@+id/action_genreDetailFragment_to_artistDetailFragment"
+            app:destination="@id/artistDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumDetailFragment"
@@ -37,5 +40,19 @@
         <action
             android:id="@+id/action_albumDetailFragment_to_genreDetailFragment"
             app:destination="@id/genreDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/artistDetailFragment"
+        android:name="com.samarth.musicapp.view.fragment.ArtistDetailFragment"
+        android:label="ArtistDetailFragment" >
+        <action
+            android:id="@+id/action_artistDetailFragment_to_albumDetailFragment"
+            app:destination="@id/albumDetailFragment" />
+        <action
+            android:id="@+id/action_artistDetailFragment_to_genreDetailFragment"
+            app:destination="@id/genreDetailFragment" />
+        <argument
+            android:name="artistName"
+            app:argType="string" />
     </fragment>
 </navigation>

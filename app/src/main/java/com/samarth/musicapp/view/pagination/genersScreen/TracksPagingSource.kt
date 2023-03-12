@@ -5,7 +5,11 @@ import androidx.paging.PagingState
 import com.samarth.musicapp.api.repository.ApiRepository
 import com.samarth.musicapp.model.api.response.topTracks.Track
 
-class TracksPagingSource(private val apiRepository: ApiRepository, private val genreName: String) :
+class TracksPagingSource(
+    private val apiRepository: ApiRepository,
+    private val genreName: String? = null,
+    private val artistName: String? = null
+) :
     PagingSource<Int, Track>() {
     override fun getRefreshKey(state: PagingState<Int, Track>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -17,8 +21,11 @@ class TracksPagingSource(private val apiRepository: ApiRepository, private val g
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Track> {
         return try {
             val currentPage = params.key ?: 1
-            val response = apiRepository.getTracksByGenre(genreName, currentPage)
-            val data = response.body()!!.tracks.track
+            val response = if (artistName != null) apiRepository.getAllTrackByArtist(
+                artistName,
+                currentPage
+            ) else genreName?.let { apiRepository.getTracksByGenre(it, currentPage) }
+            val data = response!!.body()!!.tracks.track
             val responseData = mutableListOf<Track>()
             responseData.addAll(data)
             LoadResult.Page(

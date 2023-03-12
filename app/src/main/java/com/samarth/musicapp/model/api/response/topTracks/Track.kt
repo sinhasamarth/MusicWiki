@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class Track(
     @SerializedName("@attr")
-
     val attr: AttrX,
     val artist: Artist,
     val duration: String,

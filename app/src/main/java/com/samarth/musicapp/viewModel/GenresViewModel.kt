@@ -47,7 +47,6 @@ class GenresViewModel @Inject constructor(
     fun getGenreDetails(genreName: String) {
         try {
             viewModelScope.launch {
-
                 val response = apiRepository.getGenreDetails(genreName)
                 if (response.isSuccessful) {
                     genGenresLiveData.postValue(response.body())
@@ -59,18 +58,5 @@ class GenresViewModel @Inject constructor(
         }
     }
 
-//    fun getTopAlbum() {
-//        try {
-//            viewModelScope.launch {
-//                val response = apiRepository.getAllAlbum(genere)
-//                if (response.isSuccessful) {
-//                    getAllAlbumLiveData.postValue(response.body())
-//                }
-//            }
-//
-//        } catch (e: java.lang.Exception) {
-//            Log.d("API", e.toString())
-//        }
-//    }
 
 }

@@ -26,4 +26,11 @@ class ApiRepository @Inject constructor(
         "artist.getinfo",
         artist
     )
+
+    suspend fun getAllTrackByArtist(artist: String, page: Int) = apiHelper.getTopTracksByArtist(
+        artist = artist, page = page
+    )
+    suspend fun getAllAlbumByArtist(artist: String, page: Int) = apiHelper.getTopAlbumByArtist(
+        artist = artist, page = page
+    )
 }

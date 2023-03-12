@@ -1,5 +1,6 @@
 package com.samarth.musicapp.api
 
+import com.samarth.musicapp.model.api.response.albumByArtist.AlbumArtistResponse
 import com.samarth.musicapp.model.api.response.albumDetails.AlbumDetailsResponse
 import com.samarth.musicapp.model.api.response.artistDetails.ArtistDetailResponse
 import com.samarth.musicapp.model.api.response.genreDetails.GenreDetailsResponse
@@ -59,4 +60,18 @@ interface ApiService {
         @Query("artist") artist: String,
         @Query("album") album: String,
     ): Response<AlbumDetailsResponse>
+
+    @GET("2.0/")
+    suspend fun getTopTracksByArtist(
+        @Query("method") method: String = "artist.gettoptracks",
+        @Query("artist") artist: String,
+        @Query("page") page: Int
+    ): Response<TopTrackResponse>
+
+    @GET("2.0/")
+    suspend fun getTopAlbumByArtist(
+        @Query("method") method: String = "artist.gettopalbums",
+        @Query("artist") artist: String,
+        @Query("page") page: Int
+    ): Response<AlbumArtistResponse>
 }

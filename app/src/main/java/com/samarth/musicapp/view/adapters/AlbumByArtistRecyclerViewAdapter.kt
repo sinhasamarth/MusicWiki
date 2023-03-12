@@ -1,4 +1,4 @@
-package com.samarth.musicapp.view.adapters.genersDetails
+package com.samarth.musicapp.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,18 +7,20 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.samarth.musicapp.databinding.ItemImageWithTextBinding
-import com.samarth.musicapp.model.api.response.topAlbum.Album
-import com.samarth.musicapp.model.api.response.topArtist.Artist
+import com.samarth.musicapp.model.api.response.albumByArtist.Album
 import com.samarth.musicapp.utils.load
 import com.samarth.musicapp.view.SingleItemClicked
 
-class ArtistRecyclerViewAdapter(private val onItemClick: SingleItemClicked<String>) :
-    PagingDataAdapter<Artist, ArtistRecyclerViewAdapter.ItemArtistViewHolder>(COMPARATOR) {
 
-    inner class ItemArtistViewHolder(val binding: ItemImageWithTextBinding) :
+class AlbumByArtistRecyclerViewAdapter(
+    private val onItemClick: SingleItemClicked<Album>
+) :
+    PagingDataAdapter<Album, AlbumByArtistRecyclerViewAdapter.ItemAlbumViewHolder>(COMPARATOR) {
+
+    inner class ItemAlbumViewHolder(val binding: ItemImageWithTextBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onBindViewHolder(holder: ItemArtistViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemAlbumViewHolder, position: Int) {
         holder.binding.apply {
             getItem(position)?.let { data ->
                 tvHeading.text = data.name
@@ -27,34 +29,29 @@ class ArtistRecyclerViewAdapter(private val onItemClick: SingleItemClicked<Strin
                 imBg.scaleType = ImageView.ScaleType.CENTER_CROP
                 imBg.load(url)
                 root.setOnClickListener {
-                    onItemClick.onItemClickCallback(data.name)
+                    onItemClick.onItemClickCallback(data)
                 }
             }
-
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemArtistViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemAlbumViewHolder {
         val binding =
             ItemImageWithTextBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemArtistViewHolder(binding)
+        return ItemAlbumViewHolder(binding)
     }
 
     companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<Artist>() {
-            override fun areItemsTheSame(oldItem: Artist, newItem: Artist): Boolean {
+        private val COMPARATOR = object : DiffUtil.ItemCallback<Album>() {
+            override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
                 return oldItem.name == newItem.name
             }
 
-            override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean {
+            override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
                 return oldItem == newItem
             }
 
         }
-    }
-
-    override fun getItemCount(): Int {
-        return super.getItemCount()
     }
 
 }
