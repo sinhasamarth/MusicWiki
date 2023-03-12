@@ -1,4 +1,4 @@
-package com.samarth.musicapp.view.fragment
+package com.samarth.musicapp.view.fragment.genreFragments
 
 import android.os.Bundle
 import android.view.View
@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.samarth.musicapp.R
 import com.samarth.musicapp.databinding.FragmentGenreDetailsBinding
 import com.samarth.musicapp.view.adapters.genersDetails.GenreViewPagerAdapter
+import com.samarth.musicapp.view.fragment.GenreDetailFragmentArgs
 import com.samarth.musicapp.viewModel.GenresViewModel
 
 class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {

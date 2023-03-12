@@ -9,4 +9,9 @@
     <string name="tracks">Tracks</string>
     <string name="artists">Artists</string>
     <string name="album">Album</string>
+    <string name="back">back</string>
+    <string name="listeners">Listeners</string>
+    <string name="playcount">PlayCount</string>
+    <string name="top_tracks">Top Tracks</string>
+    <string name="top_album">Top Album</string>
 </resources>

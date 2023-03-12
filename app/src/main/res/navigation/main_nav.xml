@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/genreDetailFragment"
-        android:name="com.samarth.musicapp.view.fragment.GenreDetailFragment"
+        android:name="com.samarth.musicapp.view.fragment.genreFragments.GenreDetailFragment"
         android:label="GenreDetailFragment" >
         <argument
             android:name="genre"
