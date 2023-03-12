@@ -12,11 +12,10 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.samarth.musicapp.R
 import com.samarth.musicapp.databinding.FragmentGenreDetailsBinding
 import com.samarth.musicapp.view.adapters.genersDetails.GenreViewPagerAdapter
-import com.samarth.musicapp.view.fragment.GenreDetailFragmentArgs
 import com.samarth.musicapp.viewModel.GenresViewModel
 
 class GenreDetailFragment : Fragment(R.layout.fragment_genre_details) {
-    val navargs: GenreDetailFragmentArgs by navArgs()
+    private val navargs: GenreDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentGenreDetailsBinding
     private val viewModel: GenresViewModel by hiltNavGraphViewModels(R.id.main_nav)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

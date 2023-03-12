@@ -8,7 +8,7 @@
         android:id="@+id/homeFragment"
 
         android:name="com.samarth.musicapp.view.fragment.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_genreDetailFragment"
             app:destination="@id/genreDetailFragment" />
@@ -16,9 +16,26 @@
     <fragment
         android:id="@+id/genreDetailFragment"
         android:name="com.samarth.musicapp.view.fragment.genreFragments.GenreDetailFragment"
-        android:label="GenreDetailFragment" >
+        android:label="GenreDetailFragment">
         <argument
             android:name="genre"
             app:argType="string" />
+        <action
+            android:id="@+id/action_genreDetailFragment_to_albumDetailFragment"
+            app:destination="@id/albumDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumDetailFragment"
+        android:name="com.samarth.musicapp.view.fragment.AlbumDetailFragment"
+        android:label="AlbumDetailFragment">
+        <argument
+            android:name="artistName"
+            app:argType="string" />
+        <argument
+            android:name="AlbumName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_albumDetailFragment_to_genreDetailFragment"
+            app:destination="@id/genreDetailFragment" />
     </fragment>
 </navigation>

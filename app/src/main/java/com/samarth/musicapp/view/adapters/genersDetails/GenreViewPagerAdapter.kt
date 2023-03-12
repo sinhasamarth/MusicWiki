@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.samarth.musicapp.view.fragment.genreFragments.AlbumFragments
 import com.samarth.musicapp.view.fragment.genreFragments.ArtistFragment
-import com.samarth.musicapp.view.fragment.TracksFragment
+import com.samarth.musicapp.view.fragment.genreFragments.TracksFragment
 
 class GenreViewPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {

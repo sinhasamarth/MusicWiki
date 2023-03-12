@@ -1,4 +1,4 @@
-package com.samarth.musicapp.view.fragment
+package com.samarth.musicapp.view.fragment.genreFragments
 
 import android.os.Bundle
 import android.view.View

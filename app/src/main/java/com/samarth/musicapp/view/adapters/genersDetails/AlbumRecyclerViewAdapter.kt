@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.samarth.musicapp.databinding.ItemImageWithTextBinding
 import com.samarth.musicapp.model.api.response.topAlbum.Album
 import com.samarth.musicapp.utils.load
+import com.samarth.musicapp.view.SingleItemClicked
 
-class AlbumRecyclerViewAdapter :
+class AlbumRecyclerViewAdapter(private val onItemClick: SingleItemClicked<Album>) :
     PagingDataAdapter<Album, AlbumRecyclerViewAdapter.ItemAlbumViewHolder>(COMPARATOR) {
 
     inner class ItemAlbumViewHolder(val binding: ItemImageWithTextBinding) :
@@ -24,6 +25,9 @@ class AlbumRecyclerViewAdapter :
                 val url = data.image.last().src
                 imBg.scaleType= ImageView.ScaleType.CENTER_CROP
                 imBg.load(url)
+                root.setOnClickListener {
+                    onItemClick.onItemClickCallback(data)
+                }
             }
         }
     }
