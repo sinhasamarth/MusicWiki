@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+/apiKey.properties
+/apiKeyData.properties
+apiKeyData.properties

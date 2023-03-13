@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">MusicApp</string>
+    <string name="music_wiki">Music Wiki</string>
+    <string name="welcome">Welcome</string>
+    <string name="choose_a_genres_to_start_with">Choose a genres to start with</string>
+    <string name="more_genres">More Genres</string>
+    <string name="genre_desc">Genre Desc</string>
+    <string name="genre_name">Genre Name</string>
+    <string name="tracks">Tracks</string>
+    <string name="artists">Artists</string>
+    <string name="album">Album</string>
+    <string name="back">back</string>
+    <string name="listeners">Listeners</string>
+    <string name="playcount">PlayCount</string>
+    <string name="top_tracks">Top Tracks</string>
+    <string name="top_album">Top Album</string>
+    <string name="snackbar_no_network">No Network Found</string>
+    <string name="snackbar_no_network_action">Retry</string>
 </resources>
