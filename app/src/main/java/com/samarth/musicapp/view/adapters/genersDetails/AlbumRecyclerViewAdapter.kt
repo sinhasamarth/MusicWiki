@@ -51,8 +51,5 @@ class AlbumRecyclerViewAdapter(private val onItemClick: SingleItemClicked<Album>
         }
     }
 
-    override fun getItemCount(): Int {
-        return super.getItemCount()
-    }
 
 }

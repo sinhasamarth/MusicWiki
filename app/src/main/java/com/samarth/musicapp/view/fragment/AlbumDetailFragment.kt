@@ -26,10 +26,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AlbumDetailFragment : Fragment(R.layout.fragment_album_details), SingleItemClicked<String> {
 
-    val navArgs: AlbumDetailFragmentArgs by navArgs()
+    private val navArgs: AlbumDetailFragmentArgs by navArgs()
     lateinit var binding: FragmentAlbumDetailsBinding
     private val albumViewModel: AlbumViewModel by hiltNavGraphViewModels(R.id.main_nav)
-    var isAlreadyFetched = false
+    private var isAlreadyFetched = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +56,8 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_details), SingleIte
         MainActivity.connectionLiveData.observe(viewLifecycleOwner) {
             if (!isAlreadyFetched && it) try {
                 albumViewModel.getAlbumDetails(navArgs.artistName, navArgs.AlbumName)
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
         }
 
 

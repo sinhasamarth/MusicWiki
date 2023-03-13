@@ -28,7 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SingleItemClicked<String>
 
     @Inject
     lateinit var connectionLiveData: ConnectionLiveData
-    var isAlreadyFetched = false
+    private var isAlreadyFetched = false
 
 
     private lateinit var topGenresAdapters: TopGenresAdapters

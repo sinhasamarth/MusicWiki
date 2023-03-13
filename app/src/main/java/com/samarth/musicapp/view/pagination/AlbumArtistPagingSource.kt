@@ -1,6 +1,5 @@
 package com.samarth.musicapp.view.pagination
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.samarth.musicapp.api.repository.ApiRepository

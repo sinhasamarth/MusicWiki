@@ -7,7 +7,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.samarth.musicapp.databinding.ItemImageWithTextBinding
-import com.samarth.musicapp.model.api.response.topAlbum.Album
 import com.samarth.musicapp.model.api.response.topArtist.Artist
 import com.samarth.musicapp.utils.load
 import com.samarth.musicapp.view.SingleItemClicked
@@ -53,8 +52,5 @@ class ArtistRecyclerViewAdapter(private val onItemClick: SingleItemClicked<Strin
         }
     }
 
-    override fun getItemCount(): Int {
-        return super.getItemCount()
-    }
 
 }

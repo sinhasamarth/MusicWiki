@@ -8,28 +8,26 @@ class ApiRepository @Inject constructor(
 ) {
     suspend fun getAllGenres() = apiHelper.getTopTags()
 
-    suspend fun getGenreDetails(genre: String) = apiHelper.getGenreDetails("tag.getinfo", genre)
+    suspend fun getGenreDetails(genre: String) = apiHelper.getGenreDetails(genre = genre)
 
     suspend fun getAllAlbum(genre: String, page: Int) =
-        apiHelper.getTopAlbum("tag.gettopalbums", genre, page)
+        apiHelper.getTopAlbum(genre = genre, page = page)
 
     suspend fun getArtistByGenre(genre: String, page: Int) =
-        apiHelper.getTopArtists("tag.gettopartists", genre, page)
+        apiHelper.getTopArtists(genre = genre, page = page)
 
     suspend fun getTracksByGenre(genre: String, page: Int) =
-        apiHelper.getTopTracks("tag.gettoptracks", genre, page)
+        apiHelper.getTopTracks(genre = genre, page = page)
 
     suspend fun getAlbumDetails(artist: String, album: String) =
-        apiHelper.getAlbumDetails("album.getinfo", artist, album)
+        apiHelper.getAlbumDetails(album = album, artist = artist)
 
-    suspend fun getArtistDetails(artist: String) = apiHelper.getArtistDetail(
-        "artist.getinfo",
-        artist
-    )
+    suspend fun getArtistDetails(artist: String) = apiHelper.getArtistDetail(artistName = artist)
 
     suspend fun getAllTrackByArtist(artist: String, page: Int) = apiHelper.getTopTracksByArtist(
         artist = artist, page = page
     )
+
     suspend fun getAllAlbumByArtist(artist: String, page: Int) = apiHelper.getTopAlbumByArtist(
         artist = artist, page = page
     )
