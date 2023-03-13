@@ -5,12 +5,26 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.ln
 import kotlin.math.pow
 
 
-fun ImageView.load(imgUrl: String) {
-    Glide.with(this).load(imgUrl).into(this)
+fun ImageView.load(imgUrl: String, height: Int? = null, width: Int? = null) {
+    CoroutineScope(Dispatchers.IO).launch {
+        val glide = Glide.with(this@load).load(imgUrl).error(android.R.drawable.stat_notify_error)
+        height?.let { h ->
+            width?.let { glide.override(h, it) }
+        }
+        withContext(Dispatchers.Main) {
+            glide.into(this@load)
+        }
+    }
+
+
 }
 
 fun Long.readAbleFormat(): String {
@@ -39,8 +53,4 @@ fun View.invisibleIt() {
 
 fun Context.showShortToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-}
-
-fun Context.showLongToast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }

@@ -14,4 +14,6 @@
     <string name="playcount">PlayCount</string>
     <string name="top_tracks">Top Tracks</string>
     <string name="top_album">Top Album</string>
+    <string name="snackbar_no_network">No Network Found</string>
+    <string name="snackbar_no_network_action">Retry</string>
 </resources>

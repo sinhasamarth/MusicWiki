@@ -1,16 +1,17 @@
 package com.samarth.musicapp.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.samarth.musicapp.MainActivity
 import com.samarth.musicapp.R
 import com.samarth.musicapp.api.ResultState
 import com.samarth.musicapp.databinding.FragmentHomeBinding
 import com.samarth.musicapp.model.api.response.topGenres.Tag
+import com.samarth.musicapp.utils.ConnectionLiveData
 import com.samarth.musicapp.utils.gone
 import com.samarth.musicapp.utils.showShortToast
 import com.samarth.musicapp.utils.visibleIt
@@ -18,36 +19,49 @@ import com.samarth.musicapp.view.SingleItemClicked
 import com.samarth.musicapp.view.adapters.TopGenresAdapters
 import com.samarth.musicapp.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), SingleItemClicked<String> {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: MainViewModel by hiltNavGraphViewModels(R.id.main_nav)
 
+    @Inject
+    lateinit var connectionLiveData: ConnectionLiveData
+    var isAlreadyFetched = false
+
+
     private lateinit var topGenresAdapters: TopGenresAdapters
     private var showLess = true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentHomeBinding.bind(view)
-        viewModel.getAllGenres()
         initUI()
         initObservers()
     }
 
+
     private fun initUI() {
         binding.apply {
             button.setOnClickListener {
-                if (showLess) {
-                    button.rotation = 180.00f
+                if (isAlreadyFetched) {
+                    if (showLess) {
+                        button.rotation = 180.00f
+                    } else {
+                        button.rotation = 0.00f
+                    }
+                    showLess = !showLess
+                    topGenresAdapters.setLessFlag(showLess)
                 } else {
-                    button.rotation = 0.00f
-
+                    requireContext().showShortToast("Please Wait Data Not Fetched yet")
                 }
-                showLess = !showLess
-
-                topGenresAdapters.setLessFlag(showLess)
             }
+        }
 
-
+        MainActivity.connectionLiveData.observe(viewLifecycleOwner) {
+            if (!isAlreadyFetched && it) try {
+                viewModel.getAllGenres()
+            } catch (_: Exception) {
+            }
         }
     }
 
@@ -57,6 +71,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SingleItemClicked<String>
                 when (it) {
                     is ResultState.Loading -> binding.progressBar.visibleIt()
                     is ResultState.Success -> {
+                        isAlreadyFetched = true
                         it.data?.run {
                             setRecyclerView(this.tags.tag)
                             binding.progressBar.gone()

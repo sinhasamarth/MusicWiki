@@ -1,11 +1,15 @@
 package com.samarth.musicapp.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.samarth.musicapp.BuildConfig
 import com.samarth.musicapp.api.ApiService
+import com.samarth.musicapp.utils.ConnectionLiveData
 import com.samarth.musicapp.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,7 +17,6 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -75,6 +78,18 @@ class AppModule {
             .build()
         request.url(newUrl)
         return chain.proceed(request.build())
+    }
+
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    @Provides
+    @Singleton
+    fun getConnectivityManager(connectivityManager: ConnectivityManager): ConnectionLiveData {
+        return ConnectionLiveData(connectivityManager)
     }
 
 }

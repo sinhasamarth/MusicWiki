@@ -8,20 +8,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.samarth.musicapp.MainActivity
 import com.samarth.musicapp.R
 import com.samarth.musicapp.api.ResultState
 import com.samarth.musicapp.databinding.FragmentArtistDetailsBinding
 import com.samarth.musicapp.model.api.response.albumByArtist.Album
-import com.samarth.musicapp.utils.load
-import com.samarth.musicapp.utils.readAbleFormat
-import com.samarth.musicapp.utils.showShortToast
+import com.samarth.musicapp.utils.*
 import com.samarth.musicapp.view.SingleItemClicked
 import com.samarth.musicapp.view.adapters.AlbumByArtistRecyclerViewAdapter
 import com.samarth.musicapp.view.adapters.GenresAdapter
 import com.samarth.musicapp.view.adapters.genersDetails.TracksRecyclerViewAdapter
 import com.samarth.musicapp.viewModel.ArtistDetailViewModel
-import com.samarth.musicapp.utils.visibleIt
-import com.samarth.musicapp.utils.gone
 
 class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleItemClicked<String> {
 
@@ -30,12 +27,12 @@ class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleI
     private val artistDetailViewModel: ArtistDetailViewModel by hiltNavGraphViewModels(R.id.main_nav)
     private lateinit var topTrackAdapter: TracksRecyclerViewAdapter
     private lateinit var topAlbumAdapter: AlbumByArtistRecyclerViewAdapter
-
+    private var isAlreadyFetched = false
+    private var isPaginationSetup = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentArtistDetailsBinding.bind(view)
-        artistDetailViewModel.getArtistDetail(navArgs.artistName)
         initObserver()
         setUpView()
 
@@ -76,10 +73,16 @@ class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleI
         }
 
     private fun initObserver() {
+        MainActivity.connectionLiveData.observe(viewLifecycleOwner) {
+            if (it && !isAlreadyFetched) artistDetailViewModel.getArtistDetail(navArgs.artistName)
+
+        }
+        startPaginationAdapter()
         artistDetailViewModel.artistLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResultState.Loading -> binding.progressBar.visibleIt()
                 is ResultState.Success -> {
+                    isAlreadyFetched = true
                     it.data?.artist?.let { data ->
                         binding.apply {
                             imBanner.load(data.image.last().link)
@@ -98,10 +101,15 @@ class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleI
                 }
             }
         }
+    }
+
+    private fun startPaginationAdapter() {
         artistDetailViewModel.topTrackPaging(navArgs.artistName).observe(
             viewLifecycleOwner
         )
         {
+            isPaginationSetup = true
+
             topTrackAdapter.submitData(
                 lifecycle, it
             )
@@ -109,6 +117,8 @@ class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleI
 
         artistDetailViewModel.topAlbumLiveData(navArgs.artistName).observe(viewLifecycleOwner)
         {
+            isPaginationSetup = true
+
             it?.let {
                 topAlbumAdapter.submitData(
                     lifecycle, it

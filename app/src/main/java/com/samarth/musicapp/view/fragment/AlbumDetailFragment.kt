@@ -8,6 +8,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.samarth.musicapp.MainActivity
 import com.samarth.musicapp.R
 import com.samarth.musicapp.api.ResultState
 import com.samarth.musicapp.databinding.FragmentAlbumDetailsBinding
@@ -28,11 +29,11 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_details), SingleIte
     val navArgs: AlbumDetailFragmentArgs by navArgs()
     lateinit var binding: FragmentAlbumDetailsBinding
     private val albumViewModel: AlbumViewModel by hiltNavGraphViewModels(R.id.main_nav)
+    var isAlreadyFetched = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAlbumDetailsBinding.bind(view)
-        albumViewModel.getAlbumDetails(navArgs.artistName, navArgs.AlbumName)
         initObserver()
         initUi()
 
@@ -51,10 +52,19 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_details), SingleIte
     }
 
     private fun initObserver() {
+
+        MainActivity.connectionLiveData.observe(viewLifecycleOwner) {
+            if (!isAlreadyFetched && it) try {
+                albumViewModel.getAlbumDetails(navArgs.artistName, navArgs.AlbumName)
+            } catch (_: Exception) { }
+        }
+
+
         albumViewModel.albumLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ResultState.Loading -> binding.progressBar.visibleIt()
                 is ResultState.Success -> {
+                    isAlreadyFetched = true
                     it.data?.run {
                         setUiWithData(this)
                         binding.progressBar.gone()

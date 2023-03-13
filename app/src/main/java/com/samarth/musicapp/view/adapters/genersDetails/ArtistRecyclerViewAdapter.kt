@@ -23,7 +23,7 @@ class ArtistRecyclerViewAdapter(private val onItemClick: SingleItemClicked<Strin
             getItem(position)?.let { data ->
                 tvHeading.text = data.name
                 // Getting Best Quality Image
-                val url = data.image.last().text
+                val url = data.image.first().text
                 imBg.scaleType = ImageView.ScaleType.CENTER_CROP
                 imBg.load(url)
                 root.setOnClickListener {
