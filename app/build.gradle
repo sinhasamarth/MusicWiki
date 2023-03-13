@@ -22,7 +22,7 @@ android {
         if (rootProject.file("apiKey.properties").exists()) {
             properties.load(rootProject.file("apiKey.properties").newDataInputStream())
         }
-        def apiKey = properties.getProperty("API_KEY")
+        def apiKey = properties.getProperty("PRIVATE_API_KEY")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
     }
