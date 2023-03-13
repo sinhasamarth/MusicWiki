@@ -13,6 +13,7 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -41,8 +42,9 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun getClient(): OkHttpClient {
+    fun getClient(apiKey: String): OkHttpClient {
         val okHttpClient = OkHttpClient.Builder()
+
         if (BuildConfig.DEBUG) {
             val interceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
@@ -50,7 +52,8 @@ class AppModule {
         }
         okHttpClient.addInterceptor { chain ->
             return@addInterceptor addApiKeyToRequests(
-                chain
+                chain,
+                apiKey
             )
         }
         return okHttpClient.build()
@@ -59,11 +62,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun addApiKeyToRequests(chain: Interceptor.Chain): Response {
+    fun getApiKey() = BuildConfig.API_KEY
+
+    @Provides
+    @Singleton
+    fun addApiKeyToRequests(chain: Interceptor.Chain, apiKey: String): Response {
         val request = chain.request().newBuilder()
         val originalHttpUrl = chain.request().url
         val newUrl = originalHttpUrl.newBuilder()
-            .addQueryParameter("api_key", "0143bfb1f53a64771bff8ec273139724")
+            .addQueryParameter("api_key", apiKey)
             .addQueryParameter("format", "json")
             .build()
         request.url(newUrl)

@@ -1,6 +1,7 @@
 package com.samarth.musicapp.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -28,8 +29,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SingleItemClicked<String>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentHomeBinding.bind(view)
         viewModel.getAllGenres()
+        initUI()
+        initObservers()
+    }
 
-
+    private fun initUI() {
         binding.apply {
             button.setOnClickListener {
                 if (showLess) {
@@ -44,6 +48,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SingleItemClicked<String>
             }
 
 
+        }
+    }
+
+    private fun initObservers() {
+        try {
             viewModel.allGenesLiveData.observe(viewLifecycleOwner) {
                 when (it) {
                     is ResultState.Loading -> binding.progressBar.visibleIt()
@@ -58,7 +67,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SingleItemClicked<String>
                     }
                 }
             }
+        } catch (e: Exception) {
+            requireContext().showShortToast("ERROR")
         }
+
+
     }
 
     private fun setRecyclerView(data: List<Tag>) {

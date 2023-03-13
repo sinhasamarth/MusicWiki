@@ -1,5 +1,6 @@
 package com.samarth.musicapp.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,16 +28,20 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 val response = apiRepository.getAllGenres()
                 if (response.isSuccessful && response.body() != null) {
+                    Log.d("APIS", response.body().toString())
                     response.body()?.let {
                         allGenesLiveData.postValue(ResultState.Success(it))
                     }
 
                 } else {
+                    Log.d("APIE", response.body().toString())
                     allGenesLiveData.postValue(ResultState.Error("Some Error Occurred"))
                 }
             }
 
         } catch (e: Exception) {
+            Log.d("APIEE", e.toString())
+
             allGenesLiveData.postValue(ResultState.Error("Some Error Occurred"))
         }
     }
