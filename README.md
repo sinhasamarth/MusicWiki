@@ -1,6 +1,7 @@
 # Music App
 ## Features 
-### Artitecure used - MVVM 
+#### Artitecure used - MVVM 
+#### Done within 2 Days 
 #### Network Library - Retrofit (For API Calls) and Glide (For fetching Images)
 #### Secured API Key - Using local properties so that reverse engineering gets tricky
 #### Pagination 3 - For pagination in Album, Tracks and Artist Features
@@ -25,3 +26,4 @@
  ## Assumptions 
 
 #### User must use app in portrait mode for better UI
+
