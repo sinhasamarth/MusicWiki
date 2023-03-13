@@ -7,7 +7,11 @@ import com.samarth.musicapp.databinding.ItemGenersBinding
 import com.samarth.musicapp.model.api.response.topGenres.Tag
 import com.samarth.musicapp.view.SingleItemClicked
 
-class TopGenresAdapters(val data: List<Tag>, val listener: SingleItemClicked<String>) :
+class TopGenresAdapters(
+    val data: List<Tag>,
+    val listener: SingleItemClicked<String>,
+    private var showLess: Boolean = true
+) :
     RecyclerView.Adapter<TopGenresAdapters.ItemGenresViewHolder>() {
 
     inner class ItemGenresViewHolder(val binding: ItemGenersBinding) :
@@ -28,5 +32,11 @@ class TopGenresAdapters(val data: List<Tag>, val listener: SingleItemClicked<Str
         return ItemGenresViewHolder(binding)
     }
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = if (showLess && data.size > 10) 10 else data.size
+
+
+    fun setLessFlag(flag: Boolean = showLess) {
+        showLess = flag
+        notifyDataSetChanged()
+    }
 }

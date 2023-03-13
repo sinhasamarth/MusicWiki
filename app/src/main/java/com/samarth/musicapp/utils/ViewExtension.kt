@@ -1,6 +1,9 @@
 package com.samarth.musicapp.utils
 
+import android.content.Context
+import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlin.math.ln
 import kotlin.math.pow
@@ -19,4 +22,25 @@ fun Long.readAbleFormat(): String {
         count / 1000.0.pow(exp.toDouble()),
         "kMGTPE"[exp - 1]
     )
+}
+
+fun View.visibleIt() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun View.invisibleIt() {
+    this.visibility = View.INVISIBLE
+
+}
+
+fun Context.showShortToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.showLongToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }

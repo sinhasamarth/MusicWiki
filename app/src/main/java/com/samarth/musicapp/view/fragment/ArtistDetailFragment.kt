@@ -9,14 +9,19 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.samarth.musicapp.R
+import com.samarth.musicapp.api.ResultState
 import com.samarth.musicapp.databinding.FragmentArtistDetailsBinding
 import com.samarth.musicapp.model.api.response.albumByArtist.Album
 import com.samarth.musicapp.utils.load
+import com.samarth.musicapp.utils.readAbleFormat
+import com.samarth.musicapp.utils.showShortToast
 import com.samarth.musicapp.view.SingleItemClicked
 import com.samarth.musicapp.view.adapters.AlbumByArtistRecyclerViewAdapter
 import com.samarth.musicapp.view.adapters.GenresAdapter
 import com.samarth.musicapp.view.adapters.genersDetails.TracksRecyclerViewAdapter
 import com.samarth.musicapp.viewModel.ArtistDetailViewModel
+import com.samarth.musicapp.utils.visibleIt
+import com.samarth.musicapp.utils.gone
 
 class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleItemClicked<String> {
 
@@ -72,24 +77,38 @@ class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleI
 
     private fun initObserver() {
         artistDetailViewModel.artistLiveData.observe(viewLifecycleOwner) {
-            it?.artist?.let { data ->
-                binding.apply {
-                    imBanner.load(data.image.last().link)
-                    tvArtistName.text = navArgs.artistName
-                    rvGenres.adapter = GenresAdapter(data.tags.tag, this@ArtistDetailFragment)
-                    tvDesc.text = data.bio.summary
+            when (it) {
+                is ResultState.Loading -> binding.progressBar.visibleIt()
+                is ResultState.Success -> {
+                    it.data?.artist?.let { data ->
+                        binding.apply {
+                            imBanner.load(data.image.last().link)
+                            tvArtistName.text = navArgs.artistName
+                            rvGenres.adapter =
+                                GenresAdapter(data.tags.tag, this@ArtistDetailFragment)
+                            tvDesc.text = data.bio.summary
+                            tvListenersCount.text = data.stats.listeners.toLong().readAbleFormat()
+                            tvPlayCount.text = data.stats.playcount.toLong().readAbleFormat()
+                        }
+                    }
+                    binding.progressBar.gone()
+                }
+                is ResultState.Error -> {
+                    requireContext().showShortToast(it.message.toString())
                 }
             }
         }
         artistDetailViewModel.topTrackPaging(navArgs.artistName).observe(
             viewLifecycleOwner
-        ) {
+        )
+        {
             topTrackAdapter.submitData(
                 lifecycle, it
             )
         }
 
-        artistDetailViewModel.topAlbumLiveData(navArgs.artistName).observe(viewLifecycleOwner) {
+        artistDetailViewModel.topAlbumLiveData(navArgs.artistName).observe(viewLifecycleOwner)
+        {
             it?.let {
                 topAlbumAdapter.submitData(
                     lifecycle, it
@@ -102,7 +121,7 @@ class ArtistDetailFragment : Fragment(R.layout.fragment_artist_details), SingleI
 
     override fun onItemClickCallback(data: String) {
         findNavController().navigate(
-            AlbumDetailFragmentDirections.actionAlbumDetailFragmentToGenreDetailFragment(
+            ArtistDetailFragmentDirections.actionArtistDetailFragmentToGenreDetailFragment(
                 data
             )
         )

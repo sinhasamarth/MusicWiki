@@ -2,14 +2,20 @@ package com.samarth.musicapp.view.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.samarth.musicapp.R
+import com.samarth.musicapp.api.ResultState
 import com.samarth.musicapp.databinding.FragmentAlbumDetailsBinding
+import com.samarth.musicapp.model.api.response.albumDetails.AlbumDetailsResponse
+import com.samarth.musicapp.utils.gone
 import com.samarth.musicapp.utils.load
+import com.samarth.musicapp.utils.showShortToast
+import com.samarth.musicapp.utils.visibleIt
 import com.samarth.musicapp.view.SingleItemClicked
 import com.samarth.musicapp.view.adapters.GenresAdapter
 import com.samarth.musicapp.viewModel.AlbumViewModel
@@ -28,6 +34,12 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_details), SingleIte
         binding = FragmentAlbumDetailsBinding.bind(view)
         albumViewModel.getAlbumDetails(navArgs.artistName, navArgs.AlbumName)
         initObserver()
+        initUi()
+
+
+    }
+
+    private fun initUi() {
         binding.ibBackButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -36,18 +48,37 @@ class AlbumDetailFragment : Fragment(R.layout.fragment_album_details), SingleIte
             LinearLayoutManager.HORIZONTAL,
             false
         )
-
     }
 
     private fun initObserver() {
         albumViewModel.albumLiveData.observe(viewLifecycleOwner) {
-            it?.album?.let { data ->
-                binding.apply {
+            when (it) {
+                is ResultState.Loading -> binding.progressBar.visibleIt()
+                is ResultState.Success -> {
+                    it.data?.run {
+                        setUiWithData(this)
+                        binding.progressBar.gone()
+                    }
+                }
+                is ResultState.Error -> {
+                    requireContext().showShortToast(it.message.toString())
+                }
+            }
+        }
+
+    }
+
+    private fun setUiWithData(response: AlbumDetailsResponse) {
+        response.album.let { data ->
+            binding.apply {
+                try {
                     imBanner.load(data.image.last().src)
+                    imBanner.scaleType = ImageView.ScaleType.CENTER_CROP
                     tvAlbumName.text = navArgs.AlbumName
                     tvArtistName.text = navArgs.artistName
                     rvGenres.adapter = GenresAdapter(data.tags.tag, this@AlbumDetailFragment)
                     tvDesc.text = data.wiki.summary
+                } catch (_: Exception) {
                 }
             }
         }
